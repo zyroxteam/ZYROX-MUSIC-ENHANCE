@@ -1,3 +1,13 @@
+# OS
 .DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Dev artifacts (the production app is the single-file index.html)
+vendor/
 node_modules/
-*.log
+*.zip
