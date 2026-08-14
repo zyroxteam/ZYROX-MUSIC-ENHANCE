@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZYROX MUSIC ENHANCE - Pro Audio Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#07070f;--card:#13131f;--border:rgba(255,255,255,0.08);--neon:#9d5cff;--cyan:#00f5ff}
+body{background:#07070f;color:#fff;font-family:'Space Grotesk',sans-serif;overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(800px 400px at 20% 10%, rgba(157,92,255,0.25), transparent),radial-gradient(600px 400px at 80% 20%, rgba(0,245,255,0.18), transparent),radial-gradient(700px 500px at 50% 90%, rgba(255,0,128,0.12), transparent);pointer-events:none;z-index:-1}
+.header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--border);backdrop-filter:blur(20px);background:rgba(10,10,20,0.6);position:sticky;top:0;z-index:50;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:12px;font-family:'Syne',sans-serif;font-weight:800}
+.logo-mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#9d5cff,#00f5ff);display:grid;place-items:center;font-size:20px;font-weight:800;box-shadow:0 0 20px rgba(157,92,255,0.5)}
+.logo b{font-size:22px}.logo span{color:#9d5cff}.logo small{font-size:11px;opacity:0.6;font-family:'Space Grotesk';letter-spacing:2px;display:block;margin-top:-2px}
+.hdr-btn{padding:10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#fff;font-weight:600;font-size:13px;cursor:pointer}
+.toggle-wrap{display:flex;align-items:center;gap:10px;background:rgba(157,92,255,0.12);border:1px solid rgba(157,92,255,0.3);padding:6px 14px;border-radius:999px}
+.switch{position:relative;width:44px;height:24px;background:rgba(255,255,255,0.15);border-radius:999px;cursor:pointer;transition:.25s}
+.switch.on{background:linear-gradient(90deg,#9d5cff,#00f5ff)}
+.switch i{position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 2px 6px rgba(0,0,0,0.3)}
+.switch.on i{transform:translateX(20px)}
+.auto-badge{font-size:11px;font-weight:800;letter-spacing:1px}
+.hero{padding:52px 24px 32px;text-align:center;max-width:1100px;margin:0 auto}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(36px,6vw,72px);line-height:0.95;letter-spacing:-2px;text-transform:uppercase}
+.hero h1 i{font-style:normal;background:linear-gradient(90deg,#9d5cff,#00f5ff,#ff3b9a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{margin:18px auto 0;max-width:640px;opacity:0.7;font-size:15px;line-height:1.6}
+.upload-cta{margin:24px auto 0;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.main-upload{width:100%;max-width:780px;margin:26px auto 0;border:1.8px dashed rgba(157,92,255,0.45);border-radius:28px;background:linear-gradient(180deg,rgba(157,92,255,0.10),rgba(0,0,0,0));padding:34px;text-align:center;position:relative;overflow:hidden;transition:.3s}
+.main-upload.drag{border-color:#00f5ff;transform:scale(1.015);box-shadow:0 0 50px rgba(0,245,255,0.25)}
+.main-upload.auto-active{border-color:#00ff88;box-shadow:0 0 40px rgba(0,255,136,0.2)}
+.upload-icon{width:72px;height:72px;margin:0 auto 12px;border-radius:20px;display:grid;place-items:center;background:rgba(255,255,255,0.06);border:1px solid var(--border);font-size:32px}
+.progress-bar{width:100%;height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;margin-top:16px;display:none}
+.progress-bar.show{display:block}.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#9d5cff,#00f5ff,#00ff88);transition:width .2s;border-radius:999px}
+.progress-text{font-size:11px;margin-top:8px;opacity:0.6;letter-spacing:1px}
+.tools-sec{max-width:1280px;margin:38px auto 0;padding:0 20px}
+.tools-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.tools-head h2{font-family:'Syne';font-size:26px;letter-spacing:-0.5px}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.tool-card{position:relative;border-radius:22px;padding:18px;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:.28s;min-height:194px;display:flex;flex-direction:column;justify-content:space-between}
+.tool-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.18);box-shadow:0 18px 40px rgba(0,0,0,0.4)}
+.tool-card.active{outline:2px solid #9d5cff;box-shadow:0 0 30px rgba(157,92,255,0.35)}
+.tool-top{display:flex;justify-content:space-between;align-items:flex-start}.icon-box{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:24px;position:relative}
+.tool-card h3{font-family:'Syne';font-size:17px;margin-top:12px}.tool-card p{font-size:12.5px;opacity:0.55;margin-top:6px;line-height:1.5;min-height:38px}
+.card-btn{margin-top:12px;width:100%;padding:12px;border-radius:12px;border:0;font-weight:700;font-size:13px;letter-spacing:0.6px;cursor:pointer;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.card-btn:active{transform:scale(0.97)}
+/* BUTTON UI ALAG-ALAG */
+.card-auto .icon-box{background:linear-gradient(135deg,#ffd700,#ffaa00,#ff6a00);box-shadow:0 0 24px rgba(255,215,0,0.6);animation:goldPulse 1.5s infinite;border:2px solid #ffd700}
+.card-auto{border-color:rgba(255,215,0,0.35);background:linear-gradient(180deg,rgba(255,215,0,0.12),rgba(255,106,0,0.06))}
+.card-auto .card-btn{background:linear-gradient(90deg,#ffd700,#ff8c00);color:#000;font-weight:900;border-radius:999px;box-shadow:0 8px 24px rgba(255,215,0,0.4)}
+.card-bass .icon-box{background:linear-gradient(135deg,#ff3b30,#ff8a00);box-shadow:0 0 18px rgba(255,59,48,0.5);animation:pulseBass 1.8s infinite}
+.card-bass .card-btn{background:linear-gradient(90deg,#ff3b30,#ff8a00);color:#fff;box-shadow:0 8px 20px rgba(255,59,48,0.35);border-radius:999px 14px 999px 14px}
+.card-eq .icon-box{background:linear-gradient(135deg,#00ff88,#00f5ff)}.card-eq .card-btn{background:#0f0f0f;border:1px solid #00ff88;color:#00ff88;clip-path:polygon(8% 0,100% 0,92% 100%,0 100%)}
+.card-slow .icon-box{background:linear-gradient(135deg,#7a5cff,#c44dff);box-shadow:0 0 22px rgba(122,92,255,0.6)}.card-slow .card-btn{background:linear-gradient(90deg,#7a5cff,#c44dff);color:#fff;border-radius:4px;letter-spacing:2px}
+.card-cut .icon-box{background:linear-gradient(135deg,#ffd60a,#ff8a00);color:#000;transform:rotate(-8deg)}.card-cut .card-btn{background:#ffd60a;color:#000;border-radius:0;font-family:monospace;border:2px dashed #000}
+.card-vid .icon-box{background:linear-gradient(135deg,#ff006a,#ff3b9a);animation:vidBlink .9s infinite alternate}.card-vid .card-btn{background:#fff;color:#000;border-radius:999px;font-weight:800}
+.card-voice .icon-box{background:linear-gradient(135deg,#00d4ff,#0066ff);border-radius:999px}.card-voice .card-btn{background:rgba(0,212,255,0.12);border:1px solid #00d4ff;color:#00d4ff;border-radius:999px}
+.card-types .icon-box{background:linear-gradient(135deg,#ff00ff,#00ffff,#ffff00,#ff00ff);background-size:200% 200%;animation:rainbow 3s linear infinite}.card-types .card-btn{background:linear-gradient(90deg,#ff00ff,#00ffff);color:#000;font-weight:900;transform:skew(-6deg)}
+.card-8d .icon-box{background:radial-gradient(circle,#1a0a3a,#9d5cff);border:2px solid #9d5cff;animation:rotate8d 4s linear infinite}.card-8d .card-btn{background:#1a0a3a;color:#c39fff;border:1px solid #9d5cff}
+.card-3d .icon-box{background:linear-gradient(135deg,#0ff,#08f);animation:float3d 2s ease-in-out infinite}.card-3d .card-btn{background:linear-gradient(180deg,#0ff,#08f);color:#000;box-shadow:0 6px 0 #004}
+
+@keyframes pulseBass{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}@keyframes vidBlink{from{opacity:1}to{opacity:0.6}}@keyframes rainbow{0%{background-position:0% 50%}100%{background-position:200% 50%}}@keyframes rotate8d{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes float3d{0%,100%{transform:translateY(0) rotateY(-10deg)}50%{transform:translateY(-6px) rotateY(10deg)}}@keyframes goldPulse{0%,100%{box-shadow:0 0 20px rgba(255,215,0,0.5)}50%{box-shadow:0 0 38px rgba(255,215,0,0.9)}}
+
+.workspace{max-width:1280px;margin:28px auto;padding:20px;display:none;gap:18px}
+.workspace.active{display:grid;grid-template-columns:1.15fr .85fr}
+@media(max-width:980px){.workspace.active{grid-template-columns:1fr}}
+.w-left,.w-right{border-radius:22px;border:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.015));backdrop-filter:blur(12px);padding:18px}
+.w-label{font-size:11px;letter-spacing:2px;opacity:0.5;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.wave-wrap{background:rgba(0,0,0,0.5);border-radius:16px;border:1px solid var(--border);padding:12px;overflow:hidden;position:relative}
+#waveCanvas{width:100%;height:132px;display:block;border-radius:10px;background:linear-gradient(180deg,#0e0e1a,#07070f)}
+.player-row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.audio-pill{flex:1;min-width:200px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:999px;padding:8px 14px}
+.audio-pill audio{flex:1;height:28px}.icon-play{width:36px;height:36px;border-radius:999px;display:grid;place-items:center;background:#fff;color:#000;cursor:pointer;font-weight:800}
+.meta{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}.meta span{font-size:11px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid var(--border)}
+.tool-panel{margin-top:8px}.tool-panel h3{font-family:'Syne';font-size:22px;margin-bottom:6px}.tool-panel .desc{opacity:0.6;font-size:12.5px;margin-bottom:16px;line-height:1.5}
+.ctrl{margin-bottom:14px}.ctrl label{display:flex;justify-content:space-between;font-size:12px;opacity:0.8;margin-bottom:6px}.ctrl input[type=range]{width:100%;accent-color:#9d5cff;height:4px}
+.ctrl .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,0.04);font-size:12px;cursor:pointer;transition:.2s}.chip.active{background:#9d5cff;border-color:#9d5cff;color:#fff}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.action-row{display:flex;gap:10px;margin-top:18px}
+.btn-process{flex:1;padding:14px;border-radius:12px;border:0;background:linear-gradient(90deg,#9d5cff,#00f5ff);color:#fff;font-weight:800;cursor:pointer;letter-spacing:0.5px}
+.btn-process.auto{flex:1;background:linear-gradient(90deg,#ffd700,#ff8c00);color:#000;animation:goldPulse 1.5s infinite}
+.btn-download{flex:1;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);color:#fff;font-weight:700;cursor:pointer}
+.status{margin-top:12px;font-size:11px;padding:10px 12px;border-radius:10px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:#00ff88;display:none}
+.status.show{display:block}.status.err{background:rgba(255,59,48,0.08);border-color:rgba(255,59,48,0.2);color:#ff5a4f}
+.footer{padding:28px;text-align:center;opacity:0.35;font-size:11px;letter-spacing:1px;border-top:1px solid var(--border);margin-top:40px}
+.vid-preview{width:100%;border-radius:12px;max-height:220px;background:#000;margin-top:10px;display:none}
+.eq-bars{display:flex;align-items:flex-end;gap:3px;height:36px;margin-top:8px}
+.big-auto-note{background:linear-gradient(90deg,rgba(255,215,0,0.15),rgba(255,140,0,0.12));border:1px solid rgba(255,215,0,0.3);border-radius:14px;padding:12px 16px;display:flex;gap:12px;align-items:center;margin-top:14px;text-align:left}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo"><div class="logo-mark">Z</div><div><b>ZYROX <span>MUSIC</span></b><small>ENHANCE STUDIO v3 AUTO</small></div></div>
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <div class="toggle-wrap">
+      <span class="auto-badge">⚡ AUTO DOWNLOAD</span>
+      <div class="switch on" id="autoSwitch" onclick="toggleAuto()"><i></i></div>
+    </div>
+    <button class="hdr-btn" onclick="document.getElementById('fileInput').click()">+ NEW SONG</button>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>AUTO ENHANCE <br><i>DROP TO DOWNLOAD</i></h1>
+  <p>Ab bas gaana upload kar — <b>khud enhancer chalu hoga</b>, bass + voice + loudness clean hoga aur <b>automatic download</b> ho jayega. Koi button dabane ki zaroorat nahi.</p>
+  <div class="upload-cta">
+    <button class="btn-process auto" style="max-width:260px;border-radius:999px" onclick="document.getElementById('fileInput').click()">⚡ UPLOAD → AUTO ENHANCE → DOWNLOAD</button>
+  </div>
+
+  <div class="main-upload auto-active" id="dropZone">
+    <div class="upload-icon">⚡</div>
+    <h3>Song Drop Karo — Auto Magic Shuru</h3>
+    <p>MP3, WAV, FLAC, M4A, MP4 — 250MB — Upload hote hi auto enhance + auto download</p>
+    <input type="file" id="fileInput" class="file-input" accept="audio/*,video/*">
+    <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-text" id="progressText">Ready to auto enhance...</div>
+    <div class="eq-bars" id="miniBars" style="justify-content:center;margin-top:14px"></div>
+    <div class="big-auto-note">
+      <span style="font-size:22px">🤖</span>
+      <div><b style="font-size:13px">AUTO MODE ON hai:</b><div style="font-size:11px;opacity:0.7;margin-top:2px">1) File Drop → 2) ZYROX SIGNATURE Mastering (Bass + Voice + Loud) → 3) Auto WAV Download. Tool change karega to us tool ka auto download hoga.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="tools-sec" id="toolsSec">
+  <div class="tools-head"><h2>10 POWER TOOLS — AUTO MODE READY</h2><p>Tool select karo → phir jo bhi song daloge usi tool se auto download hoga</p></div>
+  <div class="tools-grid">
+
+    <div class="tool-card card-auto active" onclick="selectTool('auto')">
+      <div class="tool-top"><div class="icon-box">⚡</div><span style="font-size:10px;background:#ffd700;color:#000;padding:4px 8px;border-radius:999px;font-weight:900">AUTO • RECOMMENDED</span></div>
+      <h3>ZYROX AUTO MASTER</h3>
+      <p>Upload karte hi — Bass clean + Vocal enhance + Loudness max. Auto download.</p>
+      <button class="card-btn">⚡ AUTO ENHANCE ON</button>
+    </div>
+
+    <div class="tool-card card-bass" onclick="selectTool('bass')">
+      <div class="tool-top"><div class="icon-box">🔊</div><span style="font-size:10px;background:rgba(255,59,48,0.2);border:1px solid rgba(255,59,48,0.4);padding:4px 8px;border-radius:999px">HOT • +20dB</span></div>
+      <h3>BASS BOOSTED</h3><p>Deep sub-bass, car subwoofer test pass.</p><button class="card-btn">⚡ BOOST NOW →</button>
+    </div>
+    <div class="tool-card card-eq" onclick="selectTool('eq')">
+      <div class="tool-top"><div class="icon-box">🎚️</div><span style="font-size:10px;background:rgba(0,255,136,0.15);padding:4px 8px;border-radius:999px;border:1px solid #00ff88">5-BAND PRO</span></div>
+      <h3>EQUALIZER</h3><p>60Hz to 14kHz full control.</p><button class="card-btn">||| ADJUST EQ</button>
+    </div>
+    <div class="tool-card card-slow" onclick="selectTool('slow')">
+      <div class="tool-top"><div class="icon-box">🌙</div><span style="font-size:10px;background:rgba(122,92,255,0.2);padding:4px 8px;border-radius:999px">SLOWED</span></div>
+      <h3>SLOW + REVERB</h3><p>0.8x slow, hall reverb vibe.</p><button class="card-btn">✦ MAKE VIBE</button>
+    </div>
+    <div class="tool-card card-cut" onclick="selectTool('cut')">
+      <div class="tool-top"><div class="icon-box">✂️</div><span style="font-size:10px;background:#ffd60a;color:#000;padding:4px 8px;border-radius:0">TRIMMER</span></div>
+      <h3>CUT AUDIO</h3><p>Exact cut, ringtone maker.</p><button class="card-btn">[ CUT / TRIM ]</button>
+    </div>
+    <div class="tool-card card-vid" onclick="selectTool('video')">
+      <div class="tool-top"><div class="icon-box">🎬</div><span style="font-size:10px;background:#fff;color:#000;padding:4px 8px;border-radius:999px">FAST</span></div>
+      <h3>VIDEO TO AUDIO</h3><p>MP4 se audio extract.</p><button class="card-btn">● REC → AUDIO</button>
+    </div>
+    <div class="tool-card card-voice" onclick="selectTool('voice')">
+      <div class="tool-top"><div class="icon-box">🎙️</div><span style="font-size:10px;background:rgba(0,212,255,0.15);border:1px solid #00d4ff;padding:4px 8px;border-radius:999px">AI CLEAN</span></div>
+      <h3>ENHANCE VOICE</h3><p>Noise hata, voice clear.</p><button class="card-btn">◉ ENHANCE VOICE</button>
+    </div>
+    <div class="tool-card card-types" onclick="selectTool('types')">
+      <div class="tool-top"><div class="icon-box">🌀</div><span style="font-size:10px;background:linear-gradient(90deg,#ff00ff,#00ffff);color:#000;padding:4px 8px;border-radius:999px;font-weight:800">6 STYLES</span></div>
+      <h3>MAKE ALL TYPES SONG</h3><p>Lofi, Nightcore, Phonk etc.</p><button class="card-btn">▓ CONVERT STYLE ▓</button>
+    </div>
+    <div class="tool-card card-8d" onclick="selectTool('8d')">
+      <div class="tool-top"><div class="icon-box">8D</div><span style="font-size:10px;background:rgba(157,92,255,0.25);padding:4px 8px;border-radius:999px;border:1px solid #9d5cff">HEADPHONE</span></div>
+      <h3>8D SONG BASS BOOSTED</h3><p>360° ghumega head me.</p><button class="card-btn">◎ START 8D EXPERIENCE</button>
+    </div>
+    <div class="tool-card card-3d" onclick="selectTool('3d')">
+      <div class="tool-top"><div class="icon-box">🧊</div><span style="font-size:10px;background:rgba(0,255,255,0.2);padding:4px 8px;border-radius:999px">SPATIAL</span></div>
+      <h3>3D SONG MIX SONG</h3><p>HRTF 3D surround.</p><button class="card-btn">⬢ MIX 3D AUDIO</button>
+    </div>
+  </div>
+</section>
+
+<div class="workspace" id="workspace">
+  <div class="w-left">
+    <div class="w-label"><span>◉ WAVEFORM PREVIEW</span><span id="fileName">No file</span></div>
+    <div class="wave-wrap"><canvas id="waveCanvas" width="1200" height="260"></canvas><video id="vidPrev" class="vid-preview" controls></video></div>
+    <div class="player-row">
+      <div class="audio-pill"><div class="icon-play" id="playOrig">▶</div><div style="font-size:11px;opacity:0.6">ORIGINAL</div><audio id="origAudio" controls></audio></div>
+      <div class="audio-pill" style="border-color:rgba(255,215,0,0.4)"><div class="icon-play" id="playProc" style="background:linear-gradient(90deg,#ffd700,#ff8a00);color:#000">▶</div><div style="font-size:11px;opacity:0.6">ENHANCED</div><audio id="procAudio" controls></audio></div>
+    </div>
+    <div class="meta"><span id="metaDur">Duration: --</span><span id="metaRate">Sample: --</span><span id="metaChan">Channels: --</span><span id="metaSize">Size: --</span></div>
+    <div class="status" id="statusBox"></div>
+  </div>
+  <div class="w-right" id="toolPanelWrap"><div class="tool-panel" id="toolPanel"></div></div>
+</div>
+
+<div class="footer">ZYROX MUSIC ENHANCE v3 AUTO — UPLOAD → AUTO ENHANCE → AUTO DOWNLOAD • NO SERVER • FILES STAY ON DEVICE</div>
+
+<script>
+let audioCtx,originalBuffer=null,processedBuffer=null,origBlobUrl=null,procBlobUrl=null,currentTool='auto',fileObject=null;
+let autoDownloadEnabled=true;
+const fileInput=document.getElementById('fileInput'),dropZone=document.getElementById('dropZone'),canvas=document.getElementById('waveCanvas'),c2d=canvas.getContext('2d'),origAudio=document.getElementById('origAudio'),procAudio=document.getElementById('procAudio'),statusBox=document.getElementById('statusBox'),vidPrev=document.getElementById('vidPrev'),progressBar=document.getElementById('progressBar'),progressFill=document.getElementById('progressFill'),progressText=document.getElementById('progressText'),autoSwitch=document.getElementById('autoSwitch');
+
+function toggleAuto(){autoDownloadEnabled=!autoDownloadEnabled;autoSwitch.classList.toggle('on',autoDownloadEnabled);showStatus(autoDownloadEnabled?'⚡ AUTO DOWNLOAD ON — Ab upload karte hi auto download hoga':'AUTO DOWNLOAD OFF — Manual download karna padega');localStorage.setItem('zyrox_auto',autoDownloadEnabled?1:0);}
+function setProgress(p,t){progressBar.classList.add('show');progressFill.style.width=p+'%';progressText.textContent=t;}
+function showStatus(msg,type='ok'){statusBox.textContent=msg;statusBox.className='status show'+(type==='err'?' err':'');setTimeout(()=>statusBox.classList.remove('show'),7000)}
+function scrollToTools(){document.getElementById('toolsSec').scrollIntoView({behavior:'smooth'})}
+function ensureCtx(){if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)({sampleRate:48000}); if(audioCtx.state==='suspended') audioCtx.resume();}
+(function(){const b=document.getElementById('miniBars');for(let i=0;i<24;i++){let s=document.createElement('i');s.style.width='4px';s.style.height=(8+Math.random()*26)+'px';s.style.background='linear-gradient(180deg,#9d5cff,#00f5ff)';s.style.borderRadius='4px';s.style.opacity='0.7';b.appendChild(s);}})();
+['dragenter','dragover'].forEach(e=>dropZone.addEventListener(e,ev=>{ev.preventDefault();dropZone.classList.add('drag')}));['dragleave','drop'].forEach(e=>dropZone.addEventListener(e,ev=>{ev.preventDefault();dropZone.classList.remove('drag')}));
+dropZone.addEventListener('drop',e=>{const f=e.dataTransfer.files[0]; if(f) handleFile(f)});dropZone.addEventListener('click',()=>fileInput.click());fileInput.addEventListener('change',e=>{if(e.target.files[0]) handleFile(e.target.files[0])});
+
+async function handleFile(file){
+  fileObject=file;ensureCtx();
+  setProgress(10,'Loading '+file.name+'...');
+  showStatus('Loading '+file.name+' ...');
+  document.getElementById('fileName').textContent=file.name;
+  document.getElementById('metaSize').textContent='Size: '+(file.size/1024/1024).toFixed(2)+' MB';
+  const isVideo=file.type.startsWith('video');
+  if(origBlobUrl) URL.revokeObjectURL(origBlobUrl);
+  origBlobUrl=URL.createObjectURL(file);origAudio.src=origBlobUrl;
+  if(isVideo){vidPrev.style.display='block';vidPrev.src=origBlobUrl;}else{vidPrev.style.display='none'}
+  try{
+    setProgress(30,'Decoding audio...');
+    const arr=await file.arrayBuffer();
+    originalBuffer=await audioCtx.decodeAudioData(arr.slice(0));
+    processedBuffer=originalBuffer;
+    document.getElementById('metaDur').textContent='Duration: '+originalBuffer.duration.toFixed(2)+'s';
+    document.getElementById('metaRate').textContent='Sample: '+originalBuffer.sampleRate+' Hz';
+    document.getElementById('metaChan').textContent='Channels: '+originalBuffer.numberOfChannels;
+    drawWaveform(originalBuffer);
+    document.getElementById('workspace').classList.add('active');
+    document.getElementById('workspace').scrollIntoView({behavior:'smooth',block:'start'});
+    
+    if(autoDownloadEnabled){
+      setProgress(50,'Auto Enhancing... Tool: '+currentTool.toUpperCase());
+      showStatus('⚡ Auto Enhance shuru — '+currentTool.toUpperCase()+'...');
+      await autoProcessCurrent(); // auto process + auto download
+    } else {
+      setProgress(100,'Ready — Tool select karo aur APPLY dabao');showStatus('✅ Loaded! Ab tool select karo.');
+      if(!currentTool) selectTool('auto');
+    }
+  }catch(err){
+    console.error(err);setProgress(0,'Error');showStatus('Decode failed: '+err.message,'err');
+  }
+}
+
+function drawWaveform(buffer,color='#9d5cff'){
+  const w=canvas.width,h=canvas.height;c2d.clearRect(0,0,w,h);
+  let grad=c2d.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#151528');grad.addColorStop(1,'#0a0a12');c2d.fillStyle=grad;c2d.fillRect(0,0,w,h);
+  c2d.strokeStyle='rgba(255,255,255,0.06)';c2d.beginPath();c2d.moveTo(0,h/2);c2d.lineTo(w,h/2);c2d.stroke();
+  const data=buffer.getChannelData(0);const step=Math.ceil(data.length / w);const amp=h*0.4;
+  c2d.beginPath();c2d.strokeStyle=color;c2d.lineWidth=1.2;
+  for(let i=0;i<w;i++){let min=1,max=-1;for(let j=0;j<step;j++){let d=data[i*step+j]; if(d<min)min=d; if(d>max)max=d;}c2d.moveTo(i,h/2+min*amp);c2d.lineTo(i,h/2+max*amp);}c2d.stroke();
+  c2d.beginPath();c2d.strokeStyle='rgba(157,92,255,0.5)';c2d.lineWidth=1.5;for(let i=0;i<w;i++){let idx=i*step;if(idx>=data.length)break;let v=data[idx];let y=h/2+v*amp*0.7; if(i===0)c2d.moveTo(i,y); else c2d.lineTo(i,y);}c2d.stroke();
+}
+document.getElementById('playOrig').onclick=()=>{if(origAudio.paused) origAudio.play(); else origAudio.pause()};
+document.getElementById('playProc').onclick=()=>{if(procAudio.paused) procAudio.play(); else procAudio.pause()};
+
+function audioBufferToWav(buffer){
+  const numChan=buffer.numberOfChannels,samRate=buffer.sampleRate,bitDepth=16;const dataLength=buffer.length*numChan*bitDepth/8;const headerLength=44;const array=new ArrayBuffer(headerLength+dataLength);const view=new DataView(array);
+  function writeString(off,str){for(let i=0;i<str.length;i++)view.setUint8(off+i,str.charCodeAt(i))}
+  writeString(0,'RIFF');view.setUint32(4,36+dataLength,true);writeString(8,'WAVE');writeString(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,numChan,true);view.setUint32(24,samRate,true);view.setUint32(28,samRate*numChan*bitDepth/8,true);view.setUint16(32,numChan*bitDepth/8,true);view.setUint16(34,bitDepth,true);writeString(36,'data');view.setUint32(40,dataLength,true);
+  let offset=44;for(let i=0;i<buffer.length;i++){for(let ch=0;ch<numChan;ch++){let s=buffer.getChannelData(ch)[i];s=Math.max(-1,Math.min(1,s));s=s<0?s*0x8000:s*0x7FFF;view.setInt16(offset,s,true);offset+=2;}}
+  return new Blob([view],{type:'audio/wav'});
+}
+function updateProcessedAudioUI(){
+  if(!processedBuffer)return;if(procBlobUrl) URL.revokeObjectURL(procBlobUrl);
+  const blob=audioBufferToWav(processedBuffer);procBlobUrl=URL.createObjectURL(blob);procAudio.src=procBlobUrl;
+  drawWaveform(processedBuffer,currentTool==='auto'?'#ffd700':'#00f5ff');
+}
+function selectTool(id){
+  currentTool=id;document.querySelectorAll('.tool-card').forEach(c=>c.classList.remove('active'));
+  document.querySelector(`.card-${id}`)?.classList.add('active');renderToolPanel(id);
+  if(originalBuffer) document.getElementById('workspace').classList.add('active');
+}
+function renderToolPanel(id){
+  const wrap=document.getElementById('toolPanel');let html='';
+  if(id==='auto'){
+    html=`<h3>⚡ ZYROX AUTO MASTER — 1 CLICK MAGIC</h3><p class="desc">Upload karte hi khud hoga — Bass + Vocal + Loudness + Clarity. No manual. Bas drop karo aur download lo.</p>
+    <div class="ctrl"><label><span>Auto Mode</span><span style="color:#ffd700">${autoDownloadEnabled?'ON ⚡':'OFF'}</span></label><div class="big-auto-note"><span>🤖</span><div style="font-size:12px">Current: <b>${autoDownloadEnabled?'Har upload pe auto download hoga':'Manual download'}</b><br><span style="opacity:0.6">Tool badloge to naya tool auto apply hoga next upload pe.</span></div></div></div>
+    <div class="ctrl"><label><span>Master Intensity</span><span id="vAutoInt">85%</span></label><input type="range" id="autoInt" min="40" max="100" value="85"></div>
+    <div class="action-row"><button class="btn-process auto" onclick="processAutoMaster()">⚡ AUTO MASTER NOW</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;
+  }
+  if(id==='bass'){html=`<h3>BASS BOOSTED — FAAD BASS</h3><p class="desc">Low frequency 20dB tak boost. Auto pe yehi hoga agar ye tool select hai.</p><div class="ctrl"><label><span>Bass Gain</span><span id="vBass">+12 dB</span></label><input type="range" id="bassGain" min="0" max="24" value="12"></div><div class="ctrl"><label><span>Bass Frequency</span><span id="vBassF">90 Hz</span></label><input type="range" id="bassFreq" min="40" max="250" value="90"></div><div class="ctrl"><label><span>Volume</span><span id="vVol">110%</span></label><input type="range" id="bassVol" min="80" max="160" value="110"></div><div class="action-row"><button class="btn-process" onclick="processBass()">⚡ APPLY BASS</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='eq'){html=`<h3>5-BAND EQUALIZER</h3><p class="desc">Har frequency alag control.</p>${[60,230,910,4000,14000].map((f,i)=>`<div class="ctrl"><label><span>${f>=1000?f/1000+'kHz':f+'Hz'}</span><span id="eqV${i}">0 dB</span></label><input type="range" class="eqSl" data-i="${i}" min="-12" max="12" value="0"></div>`).join('')}<div class="action-row"><button class="btn-process" onclick="processEQ()">🎚️ APPLY EQ</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='slow'){html=`<h3>SLOW + REVERB</h3><p class="desc">Slowed vibe.</p><div class="ctrl"><label><span>Slow Speed</span><span id="vSlow">0.85x</span></label><input type="range" id="slowRate" min="0.5" max="0.95" step="0.01" value="0.85"></div><div class="ctrl"><label><span>Reverb Mix</span><span id="vRev">65%</span></label><input type="range" id="revMix" min="0" max="100" value="65"></div><div class="ctrl"><label><span>Decay</span><span id="vDecay">3.2s</span></label><input type="range" id="revDecay" min="0.5" max="6" step="0.1" value="3.2"></div><div class="action-row"><button class="btn-process" onclick="processSlow()">🌙 MAKE SLOW REVERB</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='cut'){html=`<h3>CUT AUDIO</h3><p class="desc">Trim.</p><div class="row2"><div class="ctrl"><label><span>Start</span><span id="vStart">0.0</span></label><input type="range" id="cutStart" min="0" max="100" step="0.01" value="0"></div><div class="ctrl"><label><span>End</span><span id="vEnd">--</span></label><input type="range" id="cutEnd" min="0" max="100" step="0.01" value="100"></div></div><div class="action-row"><button class="btn-process" onclick="processCut()">✂️ CUT</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='video'){html=`<h3>VIDEO TO AUDIO</h3><p class="desc">Extract audio.</p><div class="action-row"><button class="btn-process" onclick="processVideoToAudio()">🎬 EXTRACT</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='voice'){html=`<h3>ENHANCE VOICE</h3><p class="desc">AI Clean.</p><div class="ctrl"><label><span>Clarity</span><span id="vClar">70%</span></label><input type="range" id="clarity" min="0" max="100" value="70"></div><div class="ctrl"><label><span>Noise Cut</span><span id="vNC">60%</span></label><input type="range" id="noiseC" min="0" max="100" value="60"></div><div class="action-row"><button class="btn-process" onclick="processVoice()">🎙️ ENHANCE</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='types'){html=`<h3>MAKE ALL TYPES</h3><p class="desc">Lofi/Nightcore/Phonk.</p><div class="ctrl"><div class="chips" id="typeChips"><span class="chip active" data-t="lofi">💿 LOFI</span><span class="chip" data-t="nightcore">⚡ NIGHTCORE</span><span class="chip" data-t="daycore">☀️ DAYCORE</span><span class="chip" data-t="phonk">🚗 PHONK</span><span class="chip" data-t="8bit">👾 8-BIT</span><span class="chip" data-t="slowed">🌧️ SLOWED</span></div></div><div class="action-row"><button class="btn-process" onclick="processTypes()">🌀 CONVERT</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='8d'){html=`<h3>8D BASS BOOSTED</h3><p class="desc">Headphone 8D.</p><div class="ctrl"><label><span>Rotation</span><span id="v8speed">0.18 Hz</span></label><input type="range" id="s8speed" min="0.05" max="0.5" step="0.01" value="0.18"></div><div class="ctrl"><label><span>Bass</span><span id="v8bass">+10dB</span></label><input type="range" id="s8bass" min="0" max="18" value="10"></div><div class="action-row"><button class="btn-process" onclick="process8D()">◎ MAKE 8D</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  if(id==='3d'){html=`<h3>3D MIX</h3><p class="desc">Spatial.</p><div class="ctrl"><label><span>Speed</span><span id="v3sp">0.35Hz</span></label><input type="range" id="s3sp" min="0.05" max="0.8" step="0.05" value="0.35"></div><div class="action-row"><button class="btn-process" onclick="process3D()">⬢ MIX 3D</button><button class="btn-download" onclick="downloadProcessed()">⬇ DOWNLOAD</button></div>`;}
+  wrap.innerHTML=html;attachListeners();
+}
+function attachListeners(){
+  const byId=id=>document.getElementById(id);
+  if(byId('bassGain')){byId('bassGain').oninput=e=>byId('vBass').textContent='+'+e.target.value+' dB';byId('bassFreq').oninput=e=>byId('vBassF').textContent=e.target.value+' Hz';byId('bassVol').oninput=e=>byId('vVol').textContent=e.target.value+'%';}
+  if(byId('slowRate')){byId('slowRate').oninput=e=>byId('vSlow').textContent=e.target.value+'x';byId('revMix').oninput=e=>byId('vRev').textContent=e.target.value+'%';byId('revDecay').oninput=e=>byId('vDecay').textContent=e.target.value+'s';}
+  if(document.querySelectorAll('.eqSl').length){document.querySelectorAll('.eqSl').forEach(sl=>sl.oninput=e=>{document.getElementById('eqV'+e.target.dataset.i).textContent=(e.target.value>0?'+':'')+e.target.value+' dB'});}
+  if(byId('cutStart')&&originalBuffer){byId('cutStart').max=originalBuffer.duration;byId('cutEnd').max=originalBuffer.duration;byId('cutEnd').value=originalBuffer.duration;byId('vEnd').textContent=originalBuffer.duration.toFixed(1)+'s';byId('cutStart').oninput=e=>byId('vStart').textContent=parseFloat(e.target.value).toFixed(1)+'s';byId('cutEnd').oninput=e=>byId('vEnd').textContent=parseFloat(e.target.value).toFixed(1)+'s';}
+  if(byId('clarity')){byId('clarity').oninput=e=>byId('vClar').textContent=e.target.value+'%';byId('noiseC').oninput=e=>byId('vNC').textContent=e.target.value+'%';}
+  if(document.getElementById('typeChips')){document.querySelectorAll('#typeChips .chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('#typeChips .chip').forEach(x=>x.classList.remove('active'));c.classList.add('active')});}
+  if(byId('s8speed')){byId('s8speed').oninput=e=>byId('v8speed').textContent=e.target.value+' Hz';byId('s8bass').oninput=e=>byId('v8bass').textContent='+'+e.target.value+'dB';}
+  if(byId('s3sp')){byId('s3sp').oninput=e=>byId('v3sp').textContent=e.target.value+'Hz';}
+  if(byId('autoInt')){byId('autoInt').oninput=e=>byId('vAutoInt').textContent=e.target.value+'%';}
+}
+
+async function autoProcessCurrent(){
+  switch(currentTool){
+    case 'auto': await processAutoMaster(true); break;
+    case 'bass': await processBass(true); break;
+    case 'eq': await processEQ(true); break;
+    case 'slow': await processSlow(true); break;
+    case 'cut': await processCut(true); break;
+    case 'video': await processVideoToAudio(true); break;
+    case 'voice': await processVoice(true); break;
+    case 'types': await processTypes(true); break;
+    case '8d': await process8D(true); break;
+    case '3d': await process3D(true); break;
+    default: await processAutoMaster(true);
+  }
+}
+
+async function offlineRender(buffer,setupFn,extra=0,rateFactor=1){const sr=buffer.sampleRate;const length=Math.ceil(buffer.length/rateFactor+extra*sr);const ctxOff=new OfflineAudioContext(buffer.numberOfChannels,length,sr);const src=ctxOff.createBufferSource();src.buffer=buffer;const dest=setupFn(ctxOff,src);src.connect(dest);dest.connect(ctxOff.destination);src.start(0);return await ctxOff.startRendering();}
+
+// --- ZYROX SIGNATURE AUTO MASTER (NEW) ---
+async function processAutoMaster(isAuto=false){
+  if(!originalBuffer)return showStatus('Pehle gaana load karo','err');
+  const intenEl=document.getElementById('autoInt');const inten=intenEl?parseFloat(intenEl.value)/100:0.85;
+  setProgress(65,'ZYROX Signature Mastering...');showStatus('⚡ Auto Mastering... Bass + Vocal + Loudness');
+  processedBuffer=await offlineRender(originalBuffer,(ctxOff,src)=>{
+    const hp=ctxOff.createBiquadFilter();hp.type='highpass';hp.frequency.value=28;
+    const low=ctxOff.createBiquadFilter();low.type='lowshelf';low.frequency.value=110;low.gain.value=6*inten;
+    const lowMid=ctxOff.createBiquadFilter();lowMid.type='peaking';lowMid.frequency.value=250;lowMid.gain.value=-1.5;lowMid.Q.value=0.9;
+    const presence=ctxOff.createBiquadFilter();presence.type='peaking';presence.frequency.value=3200;presence.gain.value=3.5*inten;presence.Q.value=1.1;
+    const air=ctxOff.createBiquadFilter();air.type='highshelf';air.frequency.value=9000;air.gain.value=2.8*inten;
+    const comp=ctxOff.createDynamicsCompressor();comp.threshold.value=-18;comp.knee.value=20;comp.ratio.value=4;comp.attack.value=0.005;comp.release.value=0.18;
+    const limiter=ctxOff.createDynamicsCompressor();limiter.threshold.value=-4;limiter.knee.value=0;limiter.ratio.value=20;limiter.attack.value=0.001;limiter.release.value=0.05;
+    const gain=ctxOff.createGain();gain.gain.value=1.15;
+    src.connect(hp);hp.connect(low);low.connect(lowMid);lowMid.connect(presence);presence.connect(air);air.connect(comp);comp.connect(limiter);limiter.connect(gain);
+    return gain;
+  });
+  updateProcessedAudioUI();setProgress(90,'Finalizing WAV...');showStatus('🎉 Auto Enhanced! Ab download ho raha...');
+  if(isAuto && autoDownloadEnabled){await new Promise(r=>setTimeout(r,400));downloadProcessed(true);setProgress(100,'✅ Auto Downloaded!');}
+  else{setProgress(100,'✅ Ready to Download');showStatus('⚡ Auto Master Ready — Download dabao');}
+}
+async function processBass(isAuto=false){if(!originalBuffer)return;const gainDb=parseFloat(document.getElementById('bassGain')?.value||12);const freq=parseFloat(document.getElementById('bassFreq')?.value||90);const vol=parseFloat(document.getElementById('bassVol')?.value||110)/100;setProgress(70,'Applying Bass Boost...');processedBuffer=await offlineRender(originalBuffer,(o,s)=>{const low=o.createBiquadFilter();low.type='lowshelf';low.frequency.value=freq;low.gain.value=gainDb;const g=o.createGain();g.gain.value=vol;s.connect(low);low.connect(g);return g;});updateProcessedAudioUI();afterProcess(isAuto,'Bass Boosted');}
+async function processEQ(isAuto=false){if(!originalBuffer)return;const gains=[...document.querySelectorAll('.eqSl')].map(el=>parseFloat(el.value));const freqs=[60,230,910,4000,14000];setProgress(70,'Applying EQ...');processedBuffer=await offlineRender(originalBuffer,(o,s)=>{let last=s;freqs.forEach((f,i)=>{const fl=o.createBiquadFilter();fl.type=i===0?'lowshelf':i===4?'highshelf':'peaking';fl.frequency.value=f;fl.gain.value=gains[i]||0;fl.Q.value=1;last.connect(fl);last=fl;});return last;});updateProcessedAudioUI();afterProcess(isAuto,'EQ');}
+async function processSlow(isAuto=false){if(!originalBuffer)return;const rate=parseFloat(document.getElementById('slowRate')?.value||0.85);const mix=parseFloat(document.getElementById('revMix')?.value||65)/100;const decay=parseFloat(document.getElementById('revDecay')?.value||3.2);setProgress(60,'Slow + Reverb Rendering...');processedBuffer=await offlineRender(originalBuffer,(o,s)=>{const con=o.createConvolver();const imp=o.createBuffer(2,o.sampleRate*decay,o.sampleRate);for(let ch=0;ch<2;ch++){let d=imp.getChannelData(ch);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,2.5);}con.buffer=imp;const dry=o.createGain();dry.gain.value=1-mix;const wet=o.createGain();wet.gain.value=mix;const lp=o.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2800;s.playbackRate.value=rate;const sp=o.createGain();s.connect(sp);sp.connect(dry);sp.connect(con);con.connect(wet);const mg=o.createGain();dry.connect(mg);wet.connect(lp);lp.connect(mg);return mg;},decay,rate);updateProcessedAudioUI();afterProcess(isAuto,'Slow Reverb');}
+async function processCut(isAuto=false){if(!originalBuffer)return;const s=parseFloat(document.getElementById('cutStart')?.value||0);const e=parseFloat(document.getElementById('cutEnd')?.value||originalBuffer.duration);if(e<=s)return showStatus('End start se bada','err');const sr=originalBuffer.sampleRate;const ns=Math.floor(s*sr),ne=Math.floor(e*sr);const nl=ne-ns;const nb=new AudioContext({sampleRate:sr}).createBuffer(originalBuffer.numberOfChannels,nl,sr);for(let ch=0;ch<originalBuffer.numberOfChannels;ch++)nb.getChannelData(ch).set(originalBuffer.getChannelData(ch).subarray(ns,ne));processedBuffer=nb;updateProcessedAudioUI();afterProcess(isAuto,'Cut');}
+async function processVideoToAudio(isAuto=false){if(!originalBuffer||!fileObject)return;processedBuffer=originalBuffer;updateProcessedAudioUI();afterProcess(isAuto,'Video->Audio');}
+async function processVoice(isAuto=false){if(!originalBuffer)return;const clarity=parseFloat(document.getElementById('clarity')?.value||70)/100;const nc=parseFloat(document.getElementById('noiseC')?.value||60)/100;setProgress(70,'Enhancing Voice...');processedBuffer=await offlineRender(originalBuffer,(o,s)=>{const hp=o.createBiquadFilter();hp.type='highpass';hp.frequency.value=80+nc*60;const pr=o.createBiquadFilter();pr.type='peaking';pr.frequency.value=3200;pr.gain.value=clarity*8;pr.Q.value=1.2;const air=o.createBiquadFilter();air.type='highshelf';air.frequency.value=8000;air.gain.value=clarity*4;const comp=o.createDynamicsCompressor();comp.threshold.value=-24;comp.knee.value=30;comp.ratio.value=6;comp.attack.value=0.003;comp.release.value=0.25;const g=o.createGain();g.gain.value=1.2;s.connect(hp);hp.connect(pr);pr.connect(air);air.connect(comp);comp.connect(g);return g;});updateProcessedAudioUI();afterProcess(isAuto,'Voice Enhanced');}
+let currentType='lofi';
+async function processTypes(isAuto=false){if(!originalBuffer)return;const el=document.querySelector('#typeChips .chip.active');currentType=el?el.dataset.t:'lofi';setProgress(70,'Converting to '+currentType+'...');if(currentType==='lofi'){processedBuffer=await offlineRender(originalBuffer,(o,s)=>{s.playbackRate.value=0.9;const lp=o.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2500;s.connect(lp);return lp;},1,0.9);}else if(currentType==='nightcore'){processedBuffer=await offlineRender(originalBuffer,(o,s)=>{s.playbackRate.value=1.25;const g=o.createGain();s.connect(g);return g;},0,1.25);}else if(currentType==='daycore'){processedBuffer=await offlineRender(originalBuffer,(o,s)=>{s.playbackRate.value=0.85;const l=o.createBiquadFilter();l.type='lowshelf';l.frequency.value=200;l.gain.value=4;s.connect(l);return l;},0,0.85);}else if(currentType==='phonk'){processedBuffer=await offlineRender(originalBuffer,(o,s)=>{const l=o.createBiquadFilter();l.type='lowshelf';l.frequency.value=120;l.gain.value=12;const ws=o.createWaveShaper();ws.curve=makeDistortionCurve(200);const g=o.createGain();g.gain.value=1.3;s.connect(l);l.connect(ws);ws.connect(g);return g;});}else if(currentType==='8bit'){processedBuffer=await offlineRender(originalBuffer,(o,s)=>{const ws=o.createWaveShaper();ws.curve=makeBitCrushCurve();s.connect(ws);return ws;});}else{processedBuffer=await offlineRender(originalBuffer,(o,s)=>{s.playbackRate.value=0.82;const l=o.createBiquadFilter();l.type='lowshelf';l.frequency.value=100;l.gain.value=10;s.connect(l);return l;},2,0.82);}updateProcessedAudioUI();afterProcess(isAuto,currentType);}
+function makeDistortionCurve(amount){const k=typeof amount==='number'?amount:50;const n=44100;const curve=new Float32Array(n);const deg=Math.PI/180;for(let i=0;i<n;++i){let x=i*2/n-1;curve[i]=(3+k)*x*20*deg/(Math.PI+k*Math.abs(x));}return curve;}
+function makeBitCrushCurve(){const c=new Float32Array(256);for(let i=0;i<256;i++){let x=i/128-1;let v=Math.round(x*8)/8;c[i]=v;}return c;}
+async function process8D(isAuto=false){if(!originalBuffer)return;setProgress(60,'Rendering 8D...');const speed=parseFloat(document.getElementById('s8speed')?.value||0.18);const bass=parseFloat(document.getElementById('s8bass')?.value||10);const sr=originalBuffer.sampleRate;const len=Math.ceil(originalBuffer.length+sr*1.5);const oCtx=new OfflineAudioContext(2,len,sr);const src=oCtx.createBufferSource();src.buffer=originalBuffer;const panner=oCtx.createStereoPanner();const low=oCtx.createBiquadFilter();low.type='lowshelf';low.frequency.value=120;low.gain.value=bass;const panParam=panner.pan;const steps=Math.ceil(originalBuffer.duration*20);for(let i=0;i<=steps;i++){let t=i/20;let val=Math.sin(2*Math.PI*speed*t);panParam.setValueAtTime(val,t);}src.connect(low);low.connect(panner);panner.connect(oCtx.destination);src.start(0);processedBuffer=await oCtx.startRendering();updateProcessedAudioUI();afterProcess(isAuto,'8D');}
+async function process3D(isAuto=false){if(!originalBuffer)return;setProgress(60,'Rendering 3D...');const sr=originalBuffer.sampleRate;const len=Math.ceil(originalBuffer.length+sr*2);const oCtx=new OfflineAudioContext(2,len,sr);const src=oCtx.createBufferSource();src.buffer=originalBuffer;const p=oCtx.createPanner();p.panningModel='HRTF';p.distanceModel='inverse';src.connect(p);p.connect(oCtx.destination);const posX=p.positionX,posY=p.positionY,posZ=p.positionZ;const dur=originalBuffer.duration;const points=dur*15;for(let i=0;i<=points;i++){let t=i/15;let a=2*Math.PI*0.35*t;posX.setValueAtTime(Math.cos(a)*3,t);posY.setValueAtTime(Math.sin(a*0.5)*1.5,t);posZ.setValueAtTime(Math.sin(a)*2,t);}src.start(0);processedBuffer=await oCtx.startRendering();updateProcessedAudioUI();afterProcess(isAuto,'3D');}
+
+function afterProcess(isAuto,label){
+  if(isAuto && autoDownloadEnabled){
+    setProgress(95,'Auto Downloading '+label+'...');
+    setTimeout(()=>{downloadProcessed(true);setProgress(100,'✅ '+label+' Auto Downloaded!');showStatus('✅ '+label+' Enhanced & Auto Downloaded!');},300);
+  } else {
+    setProgress(100,'✅ '+label+' Ready');showStatus('✅ '+label+' Ready — Download karo');
+  }
+}
+function downloadProcessed(isAuto=false){
+  if(!processedBuffer)return showStatus('Pehle process karo','err');
+  const blob=audioBufferToWav(processedBuffer);const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;
+  let name='ZYROX_'+(currentTool.toUpperCase())+'_'+(fileObject?fileObject.name.split('.')[0]:'audio')+'_'+Date.now()+'.wav';
+  a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
+  if(!isAuto) showStatus('⬇ Download: '+name); else showStatus('⬇⚡ Auto Download: '+name);
+}
+
+window.selectTool=selectTool;window.processAutoMaster=processAutoMaster;window.processBass=processBass;window.processEQ=processEQ;window.processSlow=processSlow;window.processCut=processCut;window.processVideoToAudio=processVideoToAudio;window.processVoice=processVoice;window.processTypes=processTypes;window.process8D=process8D;window.process3D=process3D;window.downloadProcessed=downloadProcessed;window.toggleAuto=toggleAuto;
+
+selectTool('auto');
+</script>
+</body>
+</html>
